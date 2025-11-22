@@ -13,7 +13,7 @@ export interface OrderJobData {
 }
 
 const queueOptions: QueueOptions = {
-  connection: redisClient.getClient(),
+  connection: redisClient.getBullMQClient(),
   defaultJobOptions: {
     attempts: config.maxRetryAttempts,
     backoff: {

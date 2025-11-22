@@ -19,7 +19,7 @@ export class OrderWorker {
       'order-execution',
       async (job: Job<OrderJobData>) => this.processOrder(job),
       {
-        connection: redisClient.getClient(),
+        connection: redisClient.getBullMQClient(),
         concurrency: config.queueConcurrency,
         limiter: {
           max: 100, // Max 100 jobs

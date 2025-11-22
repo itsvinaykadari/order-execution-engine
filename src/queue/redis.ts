@@ -4,11 +4,20 @@ import { logger } from '../utils/logger';
 
 class RedisClient {
   private client: Redis;
+  private bullmqClient: Redis;
   private static instance: RedisClient;
 
   private constructor() {
+    // Regular Redis client for general use
     this.client = new Redis(config.redisUrl, {
       maxRetriesPerRequest: 3,
+      enableReadyCheck: true,
+      lazyConnect: false,
+    });
+
+    // Separate Redis client for BullMQ (requires maxRetriesPerRequest: null)
+    this.bullmqClient = new Redis(config.redisUrl, {
+      maxRetriesPerRequest: null,
       enableReadyCheck: true,
       lazyConnect: false,
     });
@@ -37,8 +46,13 @@ class RedisClient {
     return this.client;
   }
 
+  public getBullMQClient(): Redis {
+    return this.bullmqClient;
+  }
+
   public async close(): Promise<void> {
     await this.client.quit();
+    await this.bullmqClient.quit();
     logger.info('Redis connection closed');
   }
 
