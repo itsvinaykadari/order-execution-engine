@@ -20,12 +20,25 @@ describe('MockDexRouter', () => {
     });
 
     it('should execute a swap successfully', async () => {
-      const result = await router.executeSwap('SOL', 'USDC', 100, 95);
+      // Retry up to 3 times to handle the 5% random failure rate
+      let result = null;
+      let attempts = 0;
+      const maxAttempts = 3;
+
+      while (attempts < maxAttempts) {
+        try {
+          result = await router.executeSwap('SOL', 'USDC', 100, 95);
+          break;
+        } catch (error) {
+          attempts++;
+          if (attempts >= maxAttempts) throw error;
+        }
+      }
 
       expect(result).toBeDefined();
-      expect(result.txHash).toMatch(/^[a-f0-9]{64}$/);
-      expect(result.executedPrice).toBeGreaterThan(0);
-      expect(result.amountOut).toBeGreaterThan(0);
+      expect(result!.txHash).toMatch(/^[a-f0-9]{64}$/);
+      expect(result!.executedPrice).toBeGreaterThan(0);
+      expect(result!.amountOut).toBeGreaterThan(0);
     });
 
     it('should reject swap with slippage exceeded', async () => {
