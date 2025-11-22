@@ -2,6 +2,22 @@
 
 A high-performance DEX order execution engine built with Node.js, TypeScript, Fastify, and BullMQ. This system processes cryptocurrency orders with intelligent DEX routing between Raydium and Meteora, providing real-time status updates via WebSocket.
 
+## 🌐 Live Demo
+
+**API URL**: https://order-execution-api.onrender.com
+
+**Health Check**: https://order-execution-api.onrender.com/health
+
+**GitHub Repository**: https://github.com/itsvinaykadari/order-execution-engine
+
+### Quick Test
+```bash
+# Submit an order
+curl -X POST https://order-execution-api.onrender.com/api/orders/execute \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"test","orderType":"market","tokenIn":"SOL","tokenOut":"USDC","amountIn":100}'
+```
+
 ## 🎯 Order Type: Market Order
 
 **Why Market Order?**
