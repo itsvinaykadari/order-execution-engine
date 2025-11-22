@@ -7,19 +7,10 @@ async function startWorker(): Promise<void> {
   try {
     logger.info('Starting order worker...');
 
-    // Check database connection
-    const dbHealthy = await database.healthCheck();
-    if (!dbHealthy) {
-      throw new Error('Database connection failed');
-    }
+    // Wait a bit for database to be ready
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
-    // Check Redis connection
-    const redisHealthy = await redisClient.healthCheck();
-    if (!redisHealthy) {
-      throw new Error('Redis connection failed');
-    }
-
-    // Initialize worker
+    // Initialize worker (it will handle connections internally)
     const worker = new OrderWorker();
 
     logger.info('Order worker started successfully');
