@@ -7,6 +7,16 @@ async function startWorker(): Promise<void> {
   try {
     logger.info('Starting order worker...');
 
+    // Check environment variables
+    if (!process.env.DATABASE_URL) {
+      throw new Error('DATABASE_URL environment variable is not set');
+    }
+    if (!process.env.REDIS_URL) {
+      throw new Error('REDIS_URL environment variable is not set');
+    }
+
+    logger.info('Environment variables verified');
+
     // Wait a bit for database to be ready
     await new Promise(resolve => setTimeout(resolve, 3000));
 
@@ -35,7 +45,11 @@ async function startWorker(): Promise<void> {
     process.on('SIGINT', () => shutdown('SIGINT'));
 
   } catch (error) {
-    logger.error({ error }, 'Failed to start worker');
+    logger.error({ 
+      error, 
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
+    }, 'Failed to start worker');
     process.exit(1);
   }
 }
