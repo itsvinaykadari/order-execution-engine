@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
+    "build": "tsc && cp -r src/database/*.sql dist/database/",
     "start": "node dist/server.js",
     "worker": "tsx src/worker/index.ts",
     "worker:dev": "tsx watch src/worker/index.ts",
