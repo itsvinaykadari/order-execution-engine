@@ -62,10 +62,7 @@ describe('MockDexRouter', () => {
     });
 
     it('should have lower fees than Raydium', () => {
-      const meteoraRouter = new MockMeteoraRouter();
-      const raydiumRouter = new MockRaydiumRouter();
-
-      // Meteora fee should be lower
+      // Meteora fee (0.002) should be lower than Raydium fee (0.003)
       expect(0.002).toBeLessThan(0.003);
     });
   });

@@ -1,7 +1,5 @@
 import { buildServer } from '../../src/app';
 import { FastifyInstance } from 'fastify';
-import { orderModel } from '../../src/models/Order';
-import { OrderType } from '../../src/types';
 
 describe('Order Routes', () => {
   let server: FastifyInstance;
